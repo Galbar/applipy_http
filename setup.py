@@ -1,5 +1,11 @@
 from setuptools import setup, find_packages
-from applipy_web import Version
+
+try:
+    from applipy_web import Version
+except ImportError as e:
+    # ImportError will happen if any dependency is missing
+    Version = e.args[-1]
+
 
 setup(
     name='applipy_web',

@@ -22,9 +22,12 @@ __all__ = [
 ]
 
 
-from .module import WebModule
-from .handle import WebHandle
-from .api.api import Api
-from .api.url import UrlFormatter, VersionedUrlFormatter
-from .api.view import View
-from .api.cors import CorsConfig, cors_config
+try:
+    from applipy_web.handle import WebHandle
+    from applipy_web.api.api import Api
+    from applipy_web.api.url import UrlFormatter, VersionedUrlFormatter
+    from applipy_web.api.view import View
+    from applipy_web.module import WebModule
+    from applipy_web.api.cors import CorsConfig, cors_config
+except ImportError as e:
+    raise ImportError(*e.args, Version, name=e.name, path=e.path)
