@@ -22,9 +22,9 @@ setup(
     packages=find_packages(exclude=['doc', 'tests']),
     data_files=[],
     python_requires='~=3.6',
-    dependency_links=['git+ssh://git@gitlab.com/Galbar2/applipy.git#egg=applipy&subdirectory=applipy',
-                      'git+ssh://git@gitlab.com/Galbar2/applipy.git#egg=applipy_metrics&subdirectory=applipy_metrics'],
-    install_requires=['aiohttp==3.2.1',
+    install_requires=[f'applipy@git+ssh://git@gitlab.com/Galbar2/applipy.git@{Version.RELEASE}#&subdirectory=applipy',
+                      f'applipy_metrics@git+ssh://git@gitlab.com/Galbar2/applipy.git@{Version.RELEASE}#&subdirectory=applipy_metrics',
+                      'aiohttp==3.2.1',
                       'aiohttp_cors==0.7.0'],
     scripts=[],
 )
