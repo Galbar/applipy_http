@@ -1,3 +1,3 @@
-# Applipy
+# Applipy Web
 
-    pip install applipy_web
+    pip install git+ssh://git@gitlab.com/Galbar2/applipy_web.git#egg=applipy_web&subdirectory=applipy_web
