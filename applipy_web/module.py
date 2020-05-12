@@ -2,8 +2,8 @@ import logging
 
 from aiohttp import web
 
-from applipy import Config, LoggingModule, MetricsModule, Module, with_names
-
+from applipy import Config, LoggingModule, MetricsModule, Module
+from applipy_inject import with_names
 from applipy_web.handle import WebConfig, WebHandle
 
 
