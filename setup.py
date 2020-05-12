@@ -1,10 +1,11 @@
 from setuptools import setup, find_packages
+from distutils.util import convert_path
 
-try:
-    from applipy_web import Version
-except ImportError as e:
-    # ImportError will happen if any dependency is missing
-    Version = e.args[-1]
+ns = {}
+ver_path = convert_path('applipy_web/version.py')
+with open(ver_path) as ver_file:
+    exec(ver_file.read(), ns)
+version = ns['__version__']
 
 
 setup(
@@ -18,12 +19,12 @@ setup(
     license='Apache 2.0',
     author='Alessio Linares',
     author_email='mail@alessio.cc',
-    version=Version.RELEASE,
+    version=version,
     packages=find_packages(exclude=['doc', 'tests']),
     data_files=[],
     python_requires='~=3.6',
-    install_requires=[f'applipy@git+ssh://git@gitlab.com/Galbar2/applipy.git@{Version.RELEASE}#&subdirectory=applipy',
-                      f'applipy_metrics@git+ssh://git@gitlab.com/Galbar2/applipy.git@{Version.RELEASE}#&subdirectory=applipy_metrics',
+    install_requires=[f'applipy@git+ssh://git@gitlab.com/Galbar2/applipy.git@{version}#&subdirectory=applipy',
+                      f'applipy_metrics@git+ssh://git@gitlab.com/Galbar2/applipy.git@{version}#&subdirectory=applipy_metrics',
                       'aiohttp==3.2.1',
                       'aiohttp_cors==0.7.0'],
     scripts=[],
