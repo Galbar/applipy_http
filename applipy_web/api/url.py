@@ -4,7 +4,7 @@ class UrlFormatter:
         return path
 
 
-class VersionedUrlFormatter(UrlFormatter):
+class PrefixUrlFormatter(UrlFormatter):
     _version: str
 
     def __init__(self, version: str) -> None:

@@ -5,6 +5,10 @@ from applipy_web.api.view import View
 from applipy_web.api.route import Route
 
 
+class ApiName(str):
+    ...
+
+
 class Api:
 
     HTTP_METHODS = ('GET', 'HEAD', 'POST', 'PUT', 'DELETE',

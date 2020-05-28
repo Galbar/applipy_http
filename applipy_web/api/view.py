@@ -1,11 +1,8 @@
 from typing import Callable, Optional, Awaitable, Dict
 
 from aiohttp import web
-from aiohttp_cors import ResourceOptions
 
-
-CorsConfig = Dict[str, ResourceOptions]
-ViewMethod = Callable[[web.Request], Awaitable[web.StreamResponse]]
+from applipy_web.types import CorsConfig, ViewMethod
 
 
 def _disabled(

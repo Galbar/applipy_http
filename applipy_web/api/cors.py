@@ -2,7 +2,7 @@ from typing import Awaitable
 
 from aiohttp import web
 
-from applipy_web.api.view import ViewMethod, CorsConfig
+from applipy_web.types import ViewMethod, CorsConfig
 
 
 def cors_config(config: CorsConfig) -> ViewMethod:

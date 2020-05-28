@@ -4,8 +4,8 @@ from aiohttp import web
 
 from applipy import Config, LoggingModule, MetricsModule, Module
 from applipy_inject import with_names
-from applipy_web.handle import WebConfig, WebHandle
-
+from applipy_web.handle import WebConfig, WebHandle, MetricsRequestWrapper, WebRequestWrapper
+from applipy_web.api.api import ApiName
 
 def _app_runner_wrapper(
         app: web.Application,
@@ -25,14 +25,18 @@ class WebModule(Module):
         for name in webapp_names:
             host = self._get_property(name, 'host')
             port = self._get_property(name, 'port')
+            bind(ApiName, name, name=name)
             bind(web.Application, name=name)
             bind(web.AppRunner,
                  with_names(_app_runner_wrapper, {'app': name}),
                  name=name)
             bind(WebConfig, WebConfig(name, host, port), name=name)
 
+            bind(WebRequestWrapper, with_names(MetricsRequestWrapper, {'api_name': name}), name=name)
+
             register(with_names(WebHandle, {'web_app_runner': name,
                                             'apis': name,
+                                            'wrappers': name,
                                             'config': name}))
 
     def _get_webapp_names(self):
