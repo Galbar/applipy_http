@@ -29,7 +29,6 @@ class MetricsRequestWrapper(WebRequestWrapper):
     def __init__(self, metrics: MetricsRegistry, api_name: ApiName) -> None:
         self._metrics = metrics
         metric_infix = '' if not api_name else ('.' + api_name)
-        print('infix', metric_infix)
         self._metric_name = f'web{metric_infix}.request.time'
 
     def wrap(self, route: Route, func: ViewMethod) -> ViewMethod:
