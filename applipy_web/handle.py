@@ -1,7 +1,7 @@
 import functools
 import logging
 from asyncio import sleep
-from typing import List
+from typing import List, Any
 
 import aiohttp_cors
 from aiohttp import web
@@ -73,6 +73,13 @@ class MetricsRequestWrapper(WebRequestWrapper):
         return self._priority
 
 
+def adapt_handler(func: ViewMethod, ctx: Context) -> Any:
+    async def wrapper(request: web.Request) -> web.StreamResponse:
+        return await func(request, ctx)
+
+    return wrapper
+
+
 class WebConfig:
 
     def __init__(self, name, host, port):
@@ -108,7 +115,7 @@ class WebHandle(AppHandle):
                 route = self.runner.app.router.add_route(
                     route_def.method,
                     route_def.path,
-                    handler
+                    adapt_handler(handler, {})
                 )
 
                 if route_def.cors_config:
