@@ -7,6 +7,7 @@ from applipy_inject import with_names
 from applipy_web.handle import WebConfig, WebHandle, MetricsRequestWrapper, WebRequestWrapper
 from applipy_web.api.api import ApiName
 
+
 def _app_runner_wrapper(
         app: web.Application,
         logger: logging.Logger

@@ -6,9 +6,9 @@ from typing import List
 import aiohttp_cors
 from aiohttp import web
 
-from applipy import AppHandle
+from applipy import AppHandle, Config
 from applipy_web.api.route import Route
-from applipy_web.types import ViewMethod
+from applipy_web.types import ViewMethod, Context
 from applipy_metrics.meters.timer import Chronometer
 from applipy_metrics.registry import MetricsRegistry
 
@@ -20,34 +20,47 @@ class WebRequestWrapper:
     def wrap(self, route: Route, func: ViewMethod) -> ViewMethod:
         raise NotImplementedError("Not Implemented")
 
+    def priority(self) -> int:
+        """
+        The priority defines when the wrapper is applied relative to other
+        registered wrappers.
+        The highest the priority, the later it is applied (It will wrap all the
+        lower priority wrappers)
+        """
+        return 0
+
 
 class MetricsRequestWrapper(WebRequestWrapper):
 
     _metrics: MetricsRegistry
     _metric_name: str
+    _priority: int
 
-    def __init__(self, metrics: MetricsRegistry, api_name: ApiName) -> None:
+    def __init__(self, metrics: MetricsRegistry, api_name: ApiName, config: Config) -> None:
         self._metrics = metrics
         metric_infix = '' if not api_name else ('.' + api_name)
         self._metric_name = f'web{metric_infix}.request.time'
+        self._priority = config.get(f'web{metric_infix}.metrics.priority', 100)
 
     def wrap(self, route: Route, func: ViewMethod) -> ViewMethod:
         tags = {
             'method': route.method,
             'path': route.path
         }
+
         @functools.wraps(func)
-        async def wrapper(request: web.Request) -> web.StreamResponse:
+        async def wrapper(request: web.Request, context: Context) -> web.StreamResponse:
             chrono = Chronometer()
             try:
-                response = await func(request)
+                _tags = tags.copy()
+                context['metrics.tags'] = _tags
+                response = await func(request, context)
                 status = response.status
             except Exception:
                 status = 500
                 raise
             finally:
                 elapsed = chrono.stop()
-                _tags = tags.copy()
                 _tags['status'] = status
 
                 self._metrics.timer(self._metric_name, _tags).update(elapsed)
@@ -55,6 +68,9 @@ class MetricsRequestWrapper(WebRequestWrapper):
             return response
 
         return wrapper
+
+    def priority(self) -> int:
+        return self._priority
 
 
 class WebConfig:
@@ -86,7 +102,7 @@ class WebHandle(AppHandle):
         for api in self.apis:
             for route_def in api.get_routes():
                 handler = route_def.handler
-                for wrapper in self.wrappers:
+                for wrapper in sorted(self.wrappers, key=lambda x: x.priority()):
                     handler = wrapper.wrap(route_def, handler)
 
                 route = self.runner.app.router.add_route(

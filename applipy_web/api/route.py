@@ -1,7 +1,3 @@
-from typing import Callable
-
-from aiohttp import web
-
 from applipy_web.types import CorsConfig, ViewMethod
 
 

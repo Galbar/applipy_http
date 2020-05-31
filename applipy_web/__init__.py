@@ -12,7 +12,7 @@ __all__ = [
 ]
 
 
-from applipy_web.version import __version__
+from applipy_web.version import __version__  # noqa
 from applipy_web.handle import WebHandle
 from applipy_web.api.api import Api, ApiName
 from applipy_web.api.url import UrlFormatter, PrefixUrlFormatter
