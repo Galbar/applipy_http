@@ -7,8 +7,8 @@ class UrlFormatter:
 class PrefixUrlFormatter(UrlFormatter):
     _version: str
 
-    def __init__(self, version: str) -> None:
-        self._version = version
+    def __init__(self, prefix: str) -> None:
+        self._prefix = prefix
 
     def format(self, path: str) -> str:
-        return f'/{self._version}{path}'
+        return f'/{self._prefix}{path}'

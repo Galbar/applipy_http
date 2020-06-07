@@ -126,7 +126,7 @@ class WebHandle(AppHandle):
         site = web.TCPSite(self.runner, self.host, self.port)
         await site.start()
         self.logger.info(
-            'Application started at http://%s:%s',
+            'Web application' + (f' `{self.name}` ' if self.name else ' ') + 'started at http://%s:%s',
             self.host,
             self.port
         )
@@ -134,5 +134,5 @@ class WebHandle(AppHandle):
             await sleep(3600)
 
     async def on_shutdown(self):
-        self.logger.info('Shutting down web application')
+        self.logger.info('Shutting down web application' + (f' `{self.name}`' if self.name else ''))
         await self.runner.cleanup()
