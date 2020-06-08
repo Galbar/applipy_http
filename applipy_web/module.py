@@ -15,6 +15,10 @@ def _app_runner_wrapper(
     return web.AppRunner(app, logger=logger)
 
 
+def _aiohttp_application_builder() -> web.Application:
+    return web.Application()
+
+
 class WebModule(Module):
 
     def __init__(self, config: Config):
@@ -27,7 +31,7 @@ class WebModule(Module):
             host = self._get_property(name, 'host')
             port = self._get_property(name, 'port')
             bind(ApiName, name, name=name)
-            bind(web.Application, name=name)
+            bind(_aiohttp_application_builder, name=name)
             bind(web.AppRunner,
                  with_names(_app_runner_wrapper, {'app': name}),
                  name=name)

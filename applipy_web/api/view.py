@@ -20,7 +20,7 @@ def _disabled(
 
 class View:
 
-    cors_config: Optional[CorsConfig] = None
+    global_cors_config: Optional[CorsConfig] = None
 
     @_disabled
     async def get(self, request: web.Request, context: Context) -> web.StreamResponse:

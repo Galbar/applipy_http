@@ -28,7 +28,7 @@ setup(
     install_requires=[
         f'applipy@git+ssh://git@gitlab.com/Galbar2/applipy.git@{version}#&subdirectory=applipy',
         f'applipy_metrics@git+ssh://git@gitlab.com/Galbar2/applipy.git@{version}#&subdirectory=applipy_metrics',
-        'aiohttp==3.2.1',
+        'aiohttp==3.6.2',
         'aiohttp_cors==0.7.0'
     ],
     scripts=[],

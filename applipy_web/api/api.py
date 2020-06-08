@@ -32,7 +32,7 @@ class Api:
                 if not getattr(func, '_view_method_disabled', False):
                     cors_config = getattr(func,
                                           '_cors_config',
-                                          view.cors_config)
+                                          view.global_cors_config)
                     routes.append(Route(method,
                                         formatted_path,
                                         func,
