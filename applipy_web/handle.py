@@ -56,6 +56,9 @@ class MetricsRequestWrapper(WebRequestWrapper):
                 context['metrics.tags'] = _tags
                 response = await func(request, context)
                 status = response.status
+            except web.HTTPException as e:
+                status = e.status_code
+                raise
             except Exception:
                 status = 500
                 raise
