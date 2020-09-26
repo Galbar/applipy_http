@@ -9,7 +9,7 @@ from aiohttp import web
 from applipy import AppHandle, Config
 from applipy_web.api.route import Route
 from applipy_web.types import ViewMethod, Context
-from applipy_metrics.meters.timer import Chronometer
+from applipy_metrics.stats.chronometer import Chronometer
 from applipy_metrics.registry import MetricsRegistry
 
 from applipy_web.api.api import Api, ApiName
@@ -33,19 +33,20 @@ class WebRequestWrapper:
 class MetricsRequestWrapper(WebRequestWrapper):
 
     _metrics: MetricsRegistry
-    _metric_name: str
     _priority: int
+    _api_name: str
 
     def __init__(self, metrics: MetricsRegistry, api_name: ApiName, config: Config) -> None:
         self._metrics = metrics
-        metric_infix = '' if not api_name else ('.' + api_name)
-        self._metric_name = f'web{metric_infix}.request.time'
-        self._priority = config.get(f'web{metric_infix}.metrics.priority', 100)
+        config_infix = '' if not api_name else ('.' + api_name)
+        self._priority = config.get(f'web{config_infix}.metrics.priority', 100)
+        self._api_name = api_name
 
     def wrap(self, route: Route, func: ViewMethod) -> ViewMethod:
         tags = {
             'method': route.method,
-            'path': route.path
+            'path': route.path,
+            'api_name': self._api_name,
         }
 
         @functools.wraps(func)
@@ -66,7 +67,7 @@ class MetricsRequestWrapper(WebRequestWrapper):
                 elapsed = chrono.stop()
                 _tags['status'] = status
 
-                self._metrics.timer(self._metric_name, _tags).update(elapsed)
+                self._metrics.summary('applipy_web_request_duration_seconds', _tags).add(elapsed)
 
             return response
 
