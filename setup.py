@@ -24,7 +24,7 @@ setup(
     version=version,
     packages=find_packages(exclude=['doc', 'tests']),
     data_files=[],
-    python_requires='~=3.6',
+    python_requires='>=3.6',
     install_requires=[
         f'applipy@git+ssh://git@gitlab.com/Galbar2/applipy.git@{version}#&subdirectory=applipy',
         f'applipy_metrics@git+ssh://git@gitlab.com/Galbar2/applipy.git@{version}#&subdirectory=applipy_metrics',
