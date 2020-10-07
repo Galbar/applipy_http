@@ -9,8 +9,7 @@ from aiohttp import web
 from applipy import AppHandle, Config
 from applipy_web.api.route import Route
 from applipy_web.types import ViewMethod, Context
-from applipy_metrics.stats.chronometer import Chronometer
-from applipy_metrics.registry import MetricsRegistry
+from applipy_metrics import Chronometer, MetricsRegistry
 
 from applipy_web.api.api import Api, ApiName
 
