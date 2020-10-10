@@ -49,5 +49,5 @@ publish-gitlab:
   only:
     refs:
       - master
-    # changes:
-    #   - applipy_web/version.py
+    changes:
+      - applipy_web/version.py
