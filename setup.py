@@ -28,8 +28,8 @@ setup(
     data_files=[],
     python_requires='>=3.6',
     install_requires=[
-        'applipy==0.12',
-        'applipy_metrics==0.11',
+        'applipy~=0.12',
+        'applipy_metrics~=0.11',
         'aiohttp==3.6.2',
         'aiohttp_cors==0.7.0',
     ],
