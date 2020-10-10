@@ -16,6 +16,8 @@ setup(
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
     ],
     description='Library for building web services using applipy',
     license='Apache 2.0',
@@ -26,10 +28,10 @@ setup(
     data_files=[],
     python_requires='>=3.6',
     install_requires=[
-        f'applipy@git+ssh://git@gitlab.com/Galbar2/applipy.git@{version}#&subdirectory=applipy',
-        f'applipy_metrics@git+ssh://git@gitlab.com/Galbar2/applipy.git@{version}#&subdirectory=applipy_metrics',
+        'applipy==0.12',
+        'applipy_metrics==0.11',
         'aiohttp==3.6.2',
-        'aiohttp_cors==0.7.0'
+        'aiohttp_cors==0.7.0',
     ],
     scripts=[],
 )
