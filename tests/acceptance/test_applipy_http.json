@@ -1,11 +1,11 @@
 {
     "app": {
-        "name": "test_applipy_web",
+        "name": "test_applipy_http",
         "modules": [
-            "tests.acceptance.test_applipy_web.Module"
+            "tests.acceptance.test_applipy_http.Module"
         ]
     },
-    "web":{
+    "http": {
         "host": "0.0.0.0",
         "port": 8080,
         "other": {

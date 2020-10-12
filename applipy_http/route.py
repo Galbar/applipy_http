@@ -1,15 +1,15 @@
-from applipy_web.types import CorsConfig, ViewMethod
+from applipy_http.types import CorsConfig, EndpointMethod
 
 
 class Route:
     method: str
     path: str
-    handler: ViewMethod
+    handler: EndpointMethod
     cors_config: CorsConfig
 
     def __init__(self, method: str,
                  path: str,
-                 handler: ViewMethod,
+                 handler: EndpointMethod,
                  cors_config: CorsConfig):
         self.method = method
         self.path = path

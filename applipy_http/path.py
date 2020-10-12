@@ -1,10 +1,10 @@
-class UrlFormatter:
+class PathFormatter:
 
     def format(self, path: str) -> str:
         return path
 
 
-class PrefixUrlFormatter(UrlFormatter):
+class PrefixPathFormatter(PathFormatter):
     _version: str
 
     def __init__(self, prefix: str) -> None:

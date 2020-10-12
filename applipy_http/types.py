@@ -5,4 +5,4 @@ from aiohttp_cors import ResourceOptions
 
 Context = T.Dict[str, T.Any]
 CorsConfig = T.Dict[str, ResourceOptions]
-ViewMethod = T.Callable[[web.Request, Context], T.Awaitable[web.StreamResponse]]
+EndpointMethod = T.Callable[[web.Request, Context], T.Awaitable[web.StreamResponse]]

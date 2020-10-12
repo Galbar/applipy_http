@@ -4,9 +4,8 @@ from aiohttp import web
 
 from applipy import Config, LoggingModule, Module
 from applipy_inject import with_names
-from applipy_metrics import MetricsModule
-from applipy_web.handle import WebConfig, WebHandle, MetricsRequestWrapper, WebRequestWrapper
-from applipy_web.api.api import ApiName
+from applipy_http.config import ServerConfig
+from applipy_http.server import HttpServer
 
 
 def _app_runner_wrapper(
@@ -20,7 +19,7 @@ def _aiohttp_application_builder() -> web.Application:
     return web.Application()
 
 
-class WebModule(Module):
+class HttpModule(Module):
 
     def __init__(self, config: Config):
         self.config = config
@@ -31,24 +30,20 @@ class WebModule(Module):
         for name in webapp_names:
             host = self._get_property(name, 'host')
             port = self._get_property(name, 'port')
-            bind(ApiName, name, name=name)
             bind(_aiohttp_application_builder, name=name)
             bind(web.AppRunner,
                  with_names(_app_runner_wrapper, {'app': name}),
                  name=name)
-            bind(WebConfig, WebConfig(name, host, port), name=name)
+            bind(ServerConfig, ServerConfig(name, host, port), name=name)
 
-            bind(WebRequestWrapper, with_names(MetricsRequestWrapper, {'api_name': name}), name=name)
-
-            register(with_names(WebHandle, {'web_app_runner': name,
-                                            'apis': name,
-                                            'wrappers': name,
-                                            'config': name}))
+            register(with_names(HttpServer, {'app_runner': name,
+                                             'apis': name,
+                                             'config': name}))
 
     def _get_webapp_names(self):
         names = set()
         for key in self.config.keys():
-            if key.startswith('web.'):
+            if key.startswith('http.'):
                 parts = key.split('.')
                 if len(parts) == 3:
                     names.add(parts[1])
@@ -62,8 +57,8 @@ class WebModule(Module):
             infix = ''
         else:
             infix = f'.{name}'
-        return self.config.get(f'web{infix}.{prop}')
+        return self.config.get(f'http{infix}.{prop}')
 
     @classmethod
     def depends_on(cls):
-        return (LoggingModule, MetricsModule)
+        return LoggingModule,

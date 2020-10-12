@@ -2,14 +2,14 @@ import typing as T
 
 from aiohttp import web
 
-from applipy_web.types import ViewMethod, CorsConfig, Context
-from applipy_web.api.view import View
+from applipy_http.endpoint import Endpoint
+from applipy_http.types import EndpointMethod, CorsConfig, Context
 
 
-def cors_config(config: CorsConfig) -> T.Callable[[ViewMethod], ViewMethod]:
-    def func_handler(func: ViewMethod) -> ViewMethod:
+def cors_config(config: CorsConfig) -> T.Callable[[EndpointMethod], EndpointMethod]:
+    def func_handler(func: EndpointMethod) -> EndpointMethod:
         async def wrapper(
-            self: View,
+            self: Endpoint,
             request: web.Request,
             context: Context
         ) -> T.Awaitable[web.StreamResponse]:
