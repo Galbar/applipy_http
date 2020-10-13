@@ -37,8 +37,8 @@ setup(
     python_requires='>=3.6',
     install_requires=[
         'applipy~=0.12',
-        'aiohttp==3.6.2',
-        'aiohttp_cors==0.7.0',
+        'aiohttp~=3.6',
+        'aiohttp_cors~=0.7',
     ],
     scripts=[],
 )
