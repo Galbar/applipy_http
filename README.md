@@ -53,9 +53,17 @@ from applipy_inject import with_names
 # Endpoint implementation
 class HelloEndpoint(Endpoint):
 
+    def __init__(self):
+        self.name = 'World'
+
     # handler for HTTP method GET
     async def get(self, request: web.Request, context: Context) -> web.StreamResponse:
-        return web.Response(body="Hello World!")
+        return web.Response(body=f'Hello {self.name}!')
+
+    # handler for HTTP method POST
+    async def post(self, request: web.Request, context: Context) -> web.StreamResponse:
+        self.name = await request.text()
+        return web.Response(body='Success')
 
     # path of the endpoint
     def path(self) -> str:
@@ -146,3 +154,9 @@ python -m applipy
 The implemented endpoints should be available in:
  - [http://0.0.0.0:8080/hello](http://0.0.0.0:8080/hello)
  - [http://0.0.0.0:8081/bye](http://0.0.0.0:8081/bye)
+
+## Advanced Features
+
+Check the docs at
+[`/docs`](https://gitlab.com/applipy/applipy_http/-/blob/master/docs/README.md)
+for explanations on the advanced functionalities.
