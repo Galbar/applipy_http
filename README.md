@@ -1,3 +1,11 @@
+[![pipeline status](https://gitlab.com/applipy/applipy_http/badges/master/pipeline.svg)](https://gitlab.com/applipy/applipy_http/-/pipelines?scope=branches&ref=master)
+[![coverage report](https://gitlab.com/applipy/applipy_http/badges/master/coverage.svg)](https://gitlab.com/applipy/applipy_http/-/graphs/master/charts)
+[![PyPI Status](https://img.shields.io/pypi/status/applipy-http.svg)](https://pypi.org/project/applipy-http/)
+[![PyPI Version](https://img.shields.io/pypi/v/applipy-http.svg)](https://pypi.org/project/applipy-http/)
+[![PyPI Python](https://img.shields.io/pypi/pyversions/applipy-http.svg)](https://pypi.org/project/applipy-http/)
+[![PyPI License](https://img.shields.io/pypi/l/applipy-http.svg)](https://pypi.org/project/applipy-http/)
+[![PyPI Format](https://img.shields.io/pypi/format/applipy-http.svg)](https://pypi.org/project/applipy-http/)
+
 # Applipy HTTP
 
     pip install applipy_http
