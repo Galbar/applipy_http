@@ -2,10 +2,26 @@
 
 Applipy implements functionality to intercept all HTTP requests in an API.
 
-This is done by implementing an `applipy_http.EndpointWrapper`. Bellow you can
-find an implementation that checks that the user is logged in, adds the user
-identity to the [`Context`](context.md) and rejects the request if the user is
-not logged in:
+This is done by implementing an `applipy_http.EndpointWrapper`.
+
+## EndpointWrapper wrap()
+
+The wrapper implements a method `wrap()` that receives the endpoint handler
+method and returns a function that looks the same as the original endpoint
+handler. The returned function can be used to wrap the original handler and it
+will be used in place of the original handler.
+
+## EndpointWrapper priority
+
+The priority defines when the wrapper is applied relative to other registered
+wrappers. The highest the priority, the later it is applied (It will wrap all
+the lower priority wrappers).
+
+## Demo
+
+Bellow you can find an implementation that checks that the user is logged in,
+adds the user identity to the [`Context`](context.md) and rejects the request
+if the user is not logged in:
 
 ```python
 from applipy_http import EndpointMethod, EndpointWrapper
@@ -82,12 +98,6 @@ class LoadIdentity(EndpointWrapper):
         return wrapper
 
     def priority(self) -> int:
-        """
-        The priority defines when the wrapper is applied relative to other
-        registered wrappers.
-        The highest the priority, the later it is applied (It will wrap all the
-        lower priority wrappers)
-        """
         return 20
 
 
@@ -105,12 +115,6 @@ class LoginCheck(EndpointWrapper):
         return wrapper
 
     def priority(self) -> int:
-        """
-        The priority defines when the wrapper is applied relative to other
-        registered wrappers.
-        The highest the priority, the later it is applied (It will wrap all the
-        lower priority wrappers)
-        """
         return 10
 ```
 
