@@ -25,17 +25,17 @@ First, lets declare a couple of HTTP servers, one anonymous and one with name
 # dev.yaml
 
 app:
-    name: http-demo
-    modules:
-        - applipy_http.HttpModule
+  name: http-demo
+  modules:
+    - applipy_http.HttpModule
 
-http:
-    host: 0.0.0.0
-    port: 8080
+http.servers:
+- host: 0.0.0.0
+  port: 8080
 
-    demo:
-        host: 0.0.0.0
-        port: 8081
+- name: demo
+  host: 0.0.0.0
+  port: 8081
 ```
 
 Running applipy with the configuration above will result in an application that
@@ -135,20 +135,19 @@ Finally, lets update the configuration file to include our modules:
 # dev.yaml
 
 app:
-    name: http-demo
-    modules:
-        - hello.HelloModule
-        - goodbye.GoodByeModule
+  name: http-demo
+  modules:
+  - hello.HelloModule
+  - goodbye.GoodByeModule
 
 logging.level: INFO
 
 http:
-    host: 0.0.0.0
-    port: 8080
-
-    demo:
-        host: 0.0.0.0
-        port: 8081
+- host: 0.0.0.0
+  port: 8080
+- name: demo
+  host: 0.0.0.0
+  port: 8081
 ```
 
 To test it just install `applipy_http` (and `pyyaml`, because the config is in
@@ -156,7 +155,7 @@ YAML and not in JSON) and run the application:
 
 ```bash
 pip install applipy_http pyyaml
-python -m applipy
+applipy
 ```
 
 The implemented endpoints should be available in:

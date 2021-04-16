@@ -36,9 +36,9 @@ setup(
     version=version,
     packages=find_packages(exclude=['doc', 'tests']),
     data_files=[],
-    python_requires='>=3.6',
+    python_requires='>=3.8',
     install_requires=[
-        'applipy>=1.0.0,<2.0.0',
+        'applipy>=2.0.0,<3.0.0',
         'aiohttp~=3.6',
         'aiohttp_cors~=0.7',
     ],

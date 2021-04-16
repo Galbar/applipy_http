@@ -8,7 +8,7 @@ variables:
 
 check:
   stage: check
-  image: python:3.6
+  image: python:3.8
   script:
     - pip install flake8
     - flake8
@@ -17,18 +17,9 @@ check:
     - pip install . --extra-index-url "https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/api/v4/projects/${REGISTRY_PROJECT_ID}/packages/pypi/simple"
     - pytest --cov=applipy_http --cov-report=term-missing
 
-tests-3.7:
+tests-3.9:
   stage: test-all
-  image: python:3.7
-  script:
-    - pip install pytest
-    - pip install requests
-    - pip install . --extra-index-url "https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/api/v4/projects/${REGISTRY_PROJECT_ID}/packages/pypi/simple"
-    - pytest
-
-tests-3.8:
-  stage: test-all
-  image: python:3.8
+  image: python:3.9
   script:
     - pip install pytest
     - pip install requests

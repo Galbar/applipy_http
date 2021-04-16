@@ -1,5 +1,5 @@
 import logging
-from asyncio import sleep
+from asyncio import sleep, get_event_loop
 from typing import Any, List
 
 import aiohttp_cors
@@ -31,7 +31,8 @@ class HttpServer(AppHandle):
         self.runner = app_runner
         self.apis = apis
         self.config = config
-        self.logger = logger
+        self.logger = logger.getChild(f'http.{config.name}')
+        self.future = None
 
     async def on_init(self):
         cors = aiohttp_cors.setup(self.runner.app)
@@ -54,13 +55,17 @@ class HttpServer(AppHandle):
         site = web.TCPSite(self.runner, self.config.host, self.config.port)
         await site.start()
         self.logger.info(
-            'HTTP server' + (f' `{self.config.name}` ' if self.config.name else ' ') + 'started at http://%s:%s',
+            'HTTP server started at http://%s:%s',
             self.config.host,
             self.config.port
         )
-        while True:
-            await sleep(3600)
+
+        self.future = get_event_loop().create_future()
+        await self.future
+
+        self.logger.info('Shutting down HTTP server')
+        await self.runner.cleanup()
 
     async def on_shutdown(self):
-        self.logger.info('Shutting down HTTP server' + (f' `{self.config.name}`' if self.config.name else ''))
-        await self.runner.cleanup()
+        if self.future is not None:
+            self.future.set_result(None)
