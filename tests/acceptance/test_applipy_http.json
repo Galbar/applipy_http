@@ -5,12 +5,15 @@
             "tests.acceptance.test_applipy_http.Module"
         ]
     },
-    "http": {
-        "host": "0.0.0.0",
-        "port": 8080,
-        "other": {
+    "http.servers": [
+        {
+            "host": "0.0.0.0",
+            "port": 8080
+        },
+        {
+            "name": "other",
             "host": "0.0.0.0",
             "port": 8081
         }
-    }
+    ]
 }
