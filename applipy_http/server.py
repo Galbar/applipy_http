@@ -1,5 +1,5 @@
 import logging
-from asyncio import sleep, get_event_loop
+from asyncio import get_event_loop
 from typing import Any, List
 
 import aiohttp_cors
