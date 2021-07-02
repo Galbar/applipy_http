@@ -142,7 +142,7 @@ app:
 
 logging.level: INFO
 
-http:
+http.servers:
 - host: 0.0.0.0
   port: 8080
 - name: demo
