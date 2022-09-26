@@ -26,6 +26,15 @@ tests-3.9:
     - pip install . --extra-index-url "https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/api/v4/projects/${REGISTRY_PROJECT_ID}/packages/pypi/simple"
     - pytest
 
+tests-3.10:
+  stage: test-all
+  image: python:3.10
+  script:
+    - pip install pytest
+    - pip install requests
+    - pip install . --extra-index-url "https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/api/v4/projects/${REGISTRY_PROJECT_ID}/packages/pypi/simple"
+    - pytest
+
 publish-gitlab:
   stage: publish
   image: python:latest
