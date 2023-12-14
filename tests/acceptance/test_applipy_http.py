@@ -100,7 +100,6 @@ class Module(Module_):
 
         bind(Endpoint, EndpointA)
         bind(Endpoint, EndpointC)
-        bind(PathFormatter)
         bind(Api)
 
     @classmethod

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from applipy_http.path import PathFormatter
 from applipy_http.endpoint import Endpoint
@@ -15,10 +15,10 @@ class Api:
     _endpoints: List[Endpoint]
     _wrappers: List[EndpointWrapper]
 
-    def __init__(self, path_formatter: PathFormatter,
+    def __init__(self, path_formatter: Optional[PathFormatter],
                  endpoints: List[Endpoint],
                  wrappers: List[EndpointWrapper]) -> None:
-        self._path_formatter = path_formatter
+        self._path_formatter = path_formatter or PathFormatter()
         self._endpoints = endpoints
         self._wrappers = wrappers
 

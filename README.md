@@ -82,7 +82,9 @@ class HelloModule(Module):
 
     def configure(self, bind, register):
         bind(Endpoint, HelloEndpoint, name='hello')
-        bind(PathFormatter, name='hello')
+        # If no instance of PathFormatter (i.e. PrefixPathFormatter) is bound,
+        # the API will fallback to using a PathFormatter instance
+        # bind(PathFormatter, PrefixPathFormatter('v1'), name='hello')
 
         # here we register the API to the anonymous HTTP server
         # (name argument in bind() is not set)
