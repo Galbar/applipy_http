@@ -1,9 +1,9 @@
-from applipy_http.types import EndpointMethod
+from applipy_http.types import EndpointHandler
 
 
 class EndpointWrapper:
 
-    def wrap(self, method: str, path: str, handler: EndpointMethod) -> EndpointMethod:
+    def wrap(self, method: str, path: str, handler: EndpointHandler) -> EndpointHandler:
         raise NotImplementedError("Not Implemented")
 
     def priority(self) -> int:

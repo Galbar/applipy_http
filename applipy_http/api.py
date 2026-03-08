@@ -1,8 +1,9 @@
-from typing import List, Optional
+from typing import List, Optional, cast
 
 from applipy_http.path import PathFormatter
 from applipy_http.endpoint import Endpoint
 from applipy_http.route import Route
+from applipy_http.types import CorsConfig
 from applipy_http.wrapper import EndpointWrapper
 
 
@@ -30,9 +31,10 @@ class Api:
             for method in self.HTTP_METHODS:
                 handler = getattr(endpoint, method.lower())
                 if not getattr(handler, '_endpoint_method_disabled', False):
-                    cors_config = getattr(handler,
-                                          '_cors_config',
-                                          endpoint.global_cors_config)
+                    cors_config = cast(CorsConfig,
+                                       getattr(handler,
+                                               '_cors_config',
+                                               endpoint.global_cors_config))
 
                     for wrapper in sorted(self._wrappers, key=lambda x: x.priority()):
                         handler = wrapper.wrap(method, formatted_path, handler)

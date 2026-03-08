@@ -2,8 +2,9 @@ import aiohttp_cors
 from applipy import Module as Module_
 from applipy_http import (
     Api,
+    Context,
     Endpoint,
-    EndpointMethod,
+    EndpointHandler,
     EndpointWrapper,
     HttpModule,
     PathFormatter,
@@ -22,27 +23,27 @@ class EndpointA(Endpoint):
     def __init__(self, logger: Logger):
         self.logger = logger.getChild(self.__class__.__name__)
 
-    async def get(self, request, ctx):
+    async def get(self, request: web.Request, ctx: Context) -> web.StreamResponse:
         self.logger.info('GET')
         return web.Response(body='GET Success')
 
-    async def post(self, request, ctx):
+    async def post(self, request: web.Request, ctx: Context) -> web.StreamResponse:
         self.logger.info('POST')
         return web.Response(body='POST Success')
 
-    def path(self):
+    def path(self) -> str:
         return '/testA'
 
 
 class EndpointB(Endpoint):
 
-    async def put(self, request, ctx):
+    async def put(self, request: web.Request, ctx: Context) -> web.StreamResponse:
         return web.Response(body=f'PUT Matched `{request.match_info["var"]}`')
 
-    async def patch(self, request, ctx):
+    async def patch(self, request: web.Request, ctx: Context) -> web.StreamResponse:
         return web.Response(body=f'PATCH Matched `{request.match_info["var"]}`')
 
-    def path(self):
+    def path(self) -> str:
         return '/testB/{var:.*}'
 
 
@@ -51,21 +52,21 @@ class EndpointC(Endpoint):
     global_cors_config = {'*': aiohttp_cors.ResourceOptions(allow_credentials=False, allow_methods=('POST',))}
 
     @cors_config({'http://localhost:8080': aiohttp_cors.ResourceOptions(allow_methods=('GET',))})
-    async def get(self, request, ctx):
+    async def get(self, request: web.Request, ctx: Context) -> web.StreamResponse:
         return web.Response(body='GET with cors config')
 
-    async def post(self, request, ctx):
+    async def post(self, request: web.Request, ctx: Context) -> web.StreamResponse:
         return web.Response(body='POST with cors config')
 
-    def path(self):
+    def path(self) -> str:
         return '/testC'
 
 
 class TestWrapperA(EndpointWrapper):
 
-    def wrap(self, method: str, path: str, handler: EndpointMethod) -> EndpointMethod:
-        async def wrapper(*args, **kwargs):
-            response = await handler(*args, **kwargs)
+    def wrap(self, method: str, path: str, handler: EndpointHandler) -> EndpointHandler:
+        async def wrapper(request: web.Request, context: Context) -> web.StreamResponse:
+            response = await handler(request, context)
             response.headers['X-wrappers'] = response.headers.get('X-wrappers', '') + '[wrapperA]'
             return response
 
@@ -77,9 +78,9 @@ class TestWrapperA(EndpointWrapper):
 
 class TestWrapperB(EndpointWrapper):
 
-    def wrap(self, method: str, path: str, handler: EndpointMethod) -> EndpointMethod:
-        async def wrapper(*args, **kwargs):
-            response = await handler(*args, **kwargs)
+    def wrap(self, method: str, path: str, handler: EndpointHandler) -> EndpointHandler:
+        async def wrapper(request: web.Request, context: Context) -> web.StreamResponse:
+            response = await handler(request, context)
             response.headers['X-wrappers'] = response.headers.get('X-wrappers', '') + '[wrapperB]'
             return response
 
